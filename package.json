@@ -1,11 +1,11 @@
 {
-    "name": "funcdocr",
-    "title": "FuncDocr",
+    "name": "zeusfuncdocr",
+    "title": "zeusFuncDocr",
     "description": "Generates JSDoc,PHPDoc annotations for your functions.",
-    "homepage": "https://github.com/wikunia/brackets-funcdocr",
-    "version": "0.7.1",
-    "author": "Ole Kröger <o.kroeger@wikunia.de>",
-    "license": "Creative Commons v3.0",
+    "homepage": "https://github.com/vihangpatel/zeusFuncDocr",
+    "version": "1.0.0",
+    "author": "Vihang Patel",
+    "license": "MIT",
     "engines": {
         "brackets": ">=0.20.0"
     }
