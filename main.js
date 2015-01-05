@@ -101,7 +101,7 @@ define(function (require, exports, module) {
                                 "shrink" : "Shrinks", "include" : "Includes", "append" : "Appends" , "calculate" : "Calculates" , "formulate" : "Formulates" , "manipulate" : "Manipulates" , "init" : "Initializes" , "initialize" : "Initializes" ,
                                 "load" : "Loads" , "keep" : "Keeps" , "start" : "Starts" , "stop" : "Stops" , "pause" : "Pauses" , "fill" : "Fills" , "empty" : "Empties the" , "transfer" : "Transfers" , "traverse" : "Traverses", "expand" : "Expands" ,
                                 "draw" : "Draws" , "erase" : "Erases" , "clear" : "Clears", "display" : "Dislays " , "show" : "Shows" , "hide" : "Hides", "animate" : "Animates" , "listen" : "Listens" , "bind" : "Binds" , "fire" : "Fires" ,
-                                "change" : "Changes" , "fade" : "Fades" , "highlight" : "Highlights" , "freeze" : "Freezes" , "clone":"Clones" , "rotate" : "Rotates", "transform" : "Transforms"  , "intersect" : "Intersects"   , "contain" : "Check if contains"
+                                "change" : "Changes" , "fade" : "Fades" , "highlight" : "Highlights" , "freeze" : "Freezes" , "clone":"Clones" , "rotate" : "Rotates", "transform" : "Transforms"  , "intersect" : "Intersects"   , "contain" : "Check if contains", "generate" : "generates"
                                };
 
     var _prefs = PreferencesManager.getExtensionPrefs('funcdocr');
@@ -212,7 +212,9 @@ define(function (require, exports, module) {
 
     function getCurrentFunctionName(lineText){ 
         var _prefs = PreferencesManager.getExtensionPrefs('funcdocr');
-        var functionName =  "" + lineText.substr(0,lineText.indexOf(":"));        
+        var functionName =  "" + lineText.substr(0,lineText.indexOf(":")); 
+		
+		functionName = functionName.trim();
         return functionName.length === 0 ? null :
         { functionName : functionName , visibility : functionName[0] === "_" ? "private" : "public" };
     }
