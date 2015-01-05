@@ -3,7 +3,7 @@
     "title": "zeusFuncDocr",
     "description": "Generates JSDoc,PHPDoc annotations for your functions.",
     "homepage": "https://github.com/vihangpatel/zeusFuncDocr",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Vihang Patel",
     "license": "MIT",
     "engines": {

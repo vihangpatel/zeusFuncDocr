@@ -101,6 +101,7 @@ DocrHint.prototype.getHints = function (implicitChar) {
                 if (this.editor.getLanguageForSelection().getId() == "php") {
                     hints.push("@link [[Link]] [[Description]]");
                 } else {
+                    // Add extra suggestions on typing '@'
                     hints.push("{@link [[Link]] [[Description]]}");
                     hints = hints.concat(["@method [[methodName]]" , "@private" , "@public" ,                                      
                                           "@param   {[[Type]]} variable [[Description]]" , 
