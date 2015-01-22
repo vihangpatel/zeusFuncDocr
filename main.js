@@ -69,7 +69,7 @@ define(function (require, exports, module) {
 
     var SHORTCUT_REGEX		= /^((Ctrl|Alt|Shift)-){1,3}\S$/i;
 
-    // reactjs 
+    // reactjs
     var REACTJS_FUNCTION    = /React.createClass\(\{/;
     var REACTJS_PROPS	    = /[^a-zA-Z0-9]this\.props\.([a-zA-Z_$][0-9a-zA-Z_$]*)/g;
 
@@ -92,13 +92,15 @@ define(function (require, exports, module) {
         'php'          : ['', '']
     };
 
-    var FUNCTION_NAME_PREFIX = { "is" : "Checks if", "replace" : "Replaces", "create" : "Creates", 
-                                "delete" : "Deletes the", "remove" : "Removes" ,                              
+    var FUNCTION_NAME_PREFIX = { "is" : "Checks if", "replace" : "Replaces", "create" : "Creates",
+                                "delete" : "Deletes the", "remove" : "Removes" ,
                                 "bring" : "Brings", "convert" : "Converts" , "get" : "Gets","set" : "Sets" , "on" : "On",
                                 "find" : "Finds" , "filter" : "Filters" , "send" : "Sends", "make" : "Makes" , "decide" : "Decides" , "cut" : "Cuts" , "copy" : "Copies" , "paste" : "Pastes" , "close" : "Closes" , "open" : "Opens" , "equal" : "Checks if it is equal to",
                                 "render" : "Renders" , "divert" : "Diverts" , "destroy" : "Destroys", "move" : "Moves" , "drag" : "Drags" , "drop" : "Drops" , "crop" : "Crops"  , "simulate" : "Simulates" , "trigger" : "Triggers" , "increase" : "Increases",
                                 "decrease" : "Decreases" , "subtract"  : "Subtracts",
-                                "shrink" : "Shrinks", "include" : "Includes", "append" : "Appends" , "calculate" : "Calculates" , "formulate" : "Formulates" , "manipulate" : "Manipulates" , "init" : "Initializes" , "initialize" : "Initializes" ,
+                                "shrink" : "Shrinks", "include" : "Includes", "append" : "Appends" , "calculate" : "Calculates" , "formulate" : "Formulates" , "manipulate" : "Manipulates" ,
+								"initialize" : "Initializes" , "update" : "Updates" ,
+								"init" : "Initializes" ,
                                 "load" : "Loads" , "keep" : "Keeps" , "start" : "Starts" , "stop" : "Stops" , "pause" : "Pauses" , "fill" : "Fills" , "empty" : "Empties the" , "transfer" : "Transfers" , "traverse" : "Traverses", "expand" : "Expands" ,
                                 "draw" : "Draws" , "erase" : "Erases" , "clear" : "Clears", "display" : "Dislays " , "show" : "Shows" , "hide" : "Hides", "animate" : "Animates" , "listen" : "Listens" , "bind" : "Binds" , "fire" : "Fires" ,
                                 "change" : "Changes" , "fade" : "Fades" , "highlight" : "Highlights" , "freeze" : "Freezes" , "clone":"Clones" , "rotate" : "Rotates", "transform" : "Transforms"  , "intersect" : "Intersects"   , "contain" : "Check if contains", "generate" : "generates"
@@ -149,10 +151,10 @@ define(function (require, exports, module) {
         if(functionInfo){
             signature.visibility = functionInfo.visibility;
             signature.functionName = functionInfo.functionName;
-        }        
+        }
         if (!matches) {
             // try other function types
-            signature = getReactSignature(signature,editor,position,currentLine);			
+            signature = getReactSignature(signature,editor,position,currentLine);
         } else {
             // support multiline function definitions
             var lastMatches = ['',''];
@@ -165,7 +167,7 @@ define(function (require, exports, module) {
                 matches      	 = FUNCTION_REGEXP.exec(lastCurrentLine);
                 lineCounter++;
             }
-            matches = lastMatches;		
+            matches = lastMatches;
 
             signature = getNormalSignature(signature,editor,position,matches);
         }
@@ -210,10 +212,10 @@ define(function (require, exports, module) {
         return signature;
     }
 
-    function getCurrentFunctionName(lineText){ 
+    function getCurrentFunctionName(lineText){
         var _prefs = PreferencesManager.getExtensionPrefs('funcdocr');
-        var functionName =  "" + lineText.substr(0,lineText.indexOf(":")); 
-		
+        var functionName =  "" + lineText.substr(0,lineText.indexOf(":"));
+
 		functionName = functionName.trim();
         return functionName.length === 0 ? null :
         { functionName : functionName , visibility : functionName[0] === "_" ? "private" : "public" };
@@ -230,7 +232,7 @@ define(function (require, exports, module) {
         for(i = 0 ; i < prefixes.length ; i++){
             index = functionName.search(prefixes[i]);
             if(index === 0){
-                matchedPrefix = FUNCTION_NAME_PREFIX[prefixes[i]];                
+                matchedPrefix = FUNCTION_NAME_PREFIX[prefixes[i]];
                 break;
             }
         }
@@ -240,7 +242,7 @@ define(function (require, exports, module) {
 
         return matchedPrefix + functionName.replace(/([A-Z])/g, ' $1')
         .replace(/^./, function(str){ return str.toLowerCase(); }).toLowerCase();
-    }      
+    }
 
     function getNormalSignature(signature,editor,position,matches) {
         var parameters 	= matches[1].split(',');
@@ -251,7 +253,7 @@ define(function (require, exports, module) {
             if (name) {
                 signature.parameters.push({name:name});
             }
-        }		
+        }
 
         // get the function code and returns (Object)
         var codeTypes = getFunctionCodeTypes(editor,position,signature.parameters);
@@ -276,9 +278,9 @@ define(function (require, exports, module) {
 
 
     function getReactSignature(signature,editor,position,currentLine) {
-        var matches     = REACTJS_FUNCTION.exec(currentLine);		
+        var matches     = REACTJS_FUNCTION.exec(currentLine);
         if (!matches) {
-            return false;	
+            return false;
         }
 
         // get the props as parameters
@@ -484,14 +486,12 @@ define(function (require, exports, module) {
             output = [];
             output.push('/**');
             output.push(' * ' + getFunctionDescription(signature.functionName));
-            output.push(' * @method ' + signature.functionName);    
+            output.push(' * @method ' + signature.functionName);
         }
 
         if(signature.visibility){
-            output.push(' * @' + signature.visibility);   
-        }
-
-        output.push(' * ');
+            output.push(' * @' + signature.visibility);
+        }                
 
         // Determine the longest parameter and the longest type so we can right-pad them
         var maxPadding = getMaxPadding(signature);
